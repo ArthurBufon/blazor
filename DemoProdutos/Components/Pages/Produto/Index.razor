@@ -1,8 +1,12 @@
 @page "/produtos"
-
 @using DemoProdutos.Models
 
 <h3 class="mb-4">Listagem de Produtos</h3>
+
+<div class="mb-3">
+    <input type="text" class="form-control" placeholder="Buscar por descrição ou categoria..." @bind-value="termoBusca"
+        @bind-value:event="oninput" />
+</div>
 
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -16,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var produto in produtos)
+            @foreach (var produto in produtosFiltrados)
             {
                 <tr>
                     <td>
@@ -34,9 +38,27 @@
 
 @code {
     private List<Produto> produtos = new();
+    private string termoBusca = string.Empty;
+    private IEnumerable<Produto> produtosFiltrados = new List<Produto>();
 
     protected override void OnInitialized()
     {
         produtos = ProductService.GerarProdutosDummy(20);
+        produtosFiltrados = produtos;
+    }
+    private void HandleInput()
+    {
+        AplicarFiltro();
+    }
+
+    private void AplicarFiltro()
+    {
+        Console.WriteLine(termoBusca);
+        
+        produtosFiltrados = string.IsNullOrWhiteSpace(termoBusca)
+        ? produtos
+        : produtos.Where(p =>
+        p.Descricao.Contains(termoBusca, StringComparison.OrdinalIgnoreCase) ||
+        p.Categoria.Contains(termoBusca, StringComparison.OrdinalIgnoreCase));
     }
 }

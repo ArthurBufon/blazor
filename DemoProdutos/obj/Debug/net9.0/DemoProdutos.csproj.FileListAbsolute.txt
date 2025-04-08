@@ -77,3 +77,4 @@ D:\PROJETOS\2025\blazor\DemoProdutos\obj\Debug\net9.0\refint\DemoProdutos.dll
 D:\PROJETOS\2025\blazor\DemoProdutos\obj\Debug\net9.0\DemoProdutos.pdb
 D:\PROJETOS\2025\blazor\DemoProdutos\obj\Debug\net9.0\DemoProdutos.genruntimeconfig.cache
 D:\PROJETOS\2025\blazor\DemoProdutos\obj\Debug\net9.0\ref\DemoProdutos.dll
+D:\PROJETOS\2025\blazor\DemoProdutos\obj\Debug\net9.0\DemoProdutos.sourcelink.json
