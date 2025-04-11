@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\PROJETOS\\2025\\blazor\\DemoCatalogo\\DemoCatalogo\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\DemoCatalogo.bundle.scp.css",
+      "PackagePath": "staticwebassets\\DemoCatalogo.vwrv14zyer.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\PROJETOS\\2025\\blazor\\DemoCatalogo\\DemoCatalogo\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "D:\\PROJETOS\\2025\\blazor\\DemoCatalogo\\DemoCatalogo\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\PROJETOS\\2025\\blazor\\DemoCatalogo\\DemoCatalogo\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\PROJETOS\\2025\\blazor\\DemoCatalogo\\DemoCatalogo\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.DemoCatalogo.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.DemoCatalogo.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.DemoCatalogo.props",
+      "PackagePath": "build\\DemoCatalogo.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.DemoCatalogo.props",
+      "PackagePath": "buildMultiTargeting\\DemoCatalogo.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.DemoCatalogo.props",
+      "PackagePath": "buildTransitive\\DemoCatalogo.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

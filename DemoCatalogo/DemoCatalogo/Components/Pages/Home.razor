@@ -1,0 +1,120 @@
+﻿@page "/"
+
+@inject ProdutoService ProdutoService
+@rendermode RenderMode.InteractiveServer
+
+<div class="container mt-4">
+	<div class="row mb-4">
+		<div class="col-md-6">
+			<h2>Catálogo de Produtos</h2>
+		</div>
+		<div class="col-md-6">
+			<input type="text" class="form-control" placeholder="Pesquisar produtos..." @bind="TermoPesquisa"
+				@bind:event="oninput" />
+		</div>
+	</div>
+
+	@if (produtosFiltrados.Count() == 0)
+	{
+		<div class="text-center">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Carregando...</span>
+			</div>
+		</div>
+	}
+	else
+	{
+		<div class="row row-cols-1 row-cols-xl-3 g-4">
+			@foreach (var produto in produtosFiltrados)
+			{
+				<div class="col">
+					<div class="card h-100">
+						<img src="@produto.Imagem" class="card-img-top" alt="@produto.Descricao"
+							style="height: 200px; object-fit: cover;">
+
+						<div class="card-body">
+							<h5 class="card-title">@produto.Descricao</h5>
+							<p class="card-text text-muted small">Ref: @produto.Referencia</p>
+							<p class="card-text text-success fw-bold">
+								@produto.Valor.ToString("C2")
+							</p>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+
+		@if (!produtosFiltrados.Any())
+		{
+			<div class="alert alert-warning mt-4">
+				Nenhum produto encontrado para a pesquisa "@TermoPesquisa"
+			</div>
+		}
+	}
+</div>
+
+@code {
+	private List<Produto> produtosFiltrados = new();
+	private string _termoPesquisa = string.Empty;
+	private CancellationTokenSource _cts = new();
+
+	private string TermoPesquisa
+	{
+		get => _termoPesquisa;
+		set
+		{
+			if (_termoPesquisa != value)
+			{
+				_termoPesquisa = value;
+				_ = DebouncedSearch(); // Dispara a busca ao alterar o termo
+			}
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await CarregarProdutos();
+		await base.OnInitializedAsync();
+	}
+
+	private async Task CarregarProdutos()
+	{
+		produtosFiltrados = ProdutoService.BuscarEmDestaque();
+	}
+
+	private async Task DebouncedSearch()
+	{
+		_cts.Cancel();
+		_cts = new CancellationTokenSource();
+
+		try
+		{
+			await Task.Delay(300, _cts.Token);
+			await FiltrarProdutos();
+			await InvokeAsync(StateHasChanged); // Força atualização da UI
+		}
+		catch (TaskCanceledException)
+		{
+			// Ignora cancelamentos
+		}
+	}
+
+	private async Task FiltrarProdutos()
+	{
+		if (string.IsNullOrWhiteSpace(TermoPesquisa))
+		{
+			produtosFiltrados = ProdutoService.BuscarEmDestaque();
+		}
+		else
+		{
+			produtosFiltrados = ProdutoService.BuscarTodos(TermoPesquisa);
+		}
+	}
+
+	public void Dispose()
+	{
+		_cts?.Cancel();
+		_cts?.Dispose();
+	}
+
+}

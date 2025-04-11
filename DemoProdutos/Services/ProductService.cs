@@ -1,57 +1,46 @@
 // Services/ProductService.cs
-public static class ProductService
+using DemoProdutos.Models;
+
+namespace DemoCatalogo.Services;
+
+public class ProdutoService
 {
-    private static readonly string[] Categorias = new[]
-    {
-        "Eletrônicos", "Esportes", "Casa", "Moda", "Beleza", "Livros"
-    };
+    private readonly List<Produto> _products = new();
+    private int _currentId = 1;
 
-    private static readonly Dictionary<string, string[]> DescricoesPorCategoria = new()
+    public ProdutoService()
     {
-        { "Eletrônicos", new[] { "Smartphone", "Notebook", "Tablet", "Smartwatch" } },
-        { "Esportes", new[] { "Bola de Futebol", "Raquete", "Tênis", "Equipamento Academia" } },
-        { "Casa", new[] { "Panela", "Liquidificador", "Jogo de Copos", "Cama" } },
-        { "Moda", new[] { "Camiseta", "Calça Jeans", "Vestido", "Terno" } },
-        { "Beleza", new[] { "Perfume", "Creme Facial", "Kit Maquiagem", "Secador de Cabelo" } },
-        { "Livros", new[] { "Romance", "Ficção", "Técnico", "Biografia" } }
-    };
+        GenerateDummyProdutos(9);
+    }
 
-    public static List<DemoProdutos.Models.Produto> GerarProdutosDummy(int quantidade)
+    private void GenerateDummyProdutos(int quantity)
     {
         var random = new Random();
-        var produtos = new List<DemoProdutos.Models.Produto>();
 
-        for (int i = 1; i <= quantidade; i++)
+        for (int i = 0; i < quantity; i++)
         {
-            var categoria = Categorias[random.Next(Categorias.Length)];
-            var descricao = DescricoesPorCategoria[categoria][random.Next(DescricoesPorCategoria[categoria].Length)] + $" Modelo {i}";
-
-            produtos.Add(new DemoProdutos.Models.Produto
+            _products.Add(new Produto
             {
-                Descricao = descricao,
-                Valor = Math.Round((decimal)(random.NextDouble() * 990 + 10), 2),
-                Peso = Math.Round((decimal)(random.NextDouble() * 19.9 + 0.1), 2),
-                Categoria = categoria,
-                FotoUrl = GerarUrlImagem(categoria, descricao)
+                Id = _currentId++,
+                Descricao = $"Produto {_currentId}",
+                Referencia = $"REF-{random.Next(1000, 9999)}",
+                Valor = (decimal)(random.NextDouble() * 990 + 10),
+                Imagem = $"https://picsum.photos/300/200?random={_currentId}"
             });
         }
-
-        return produtos;
     }
 
-    private static string GerarUrlImagem(string categoria, string descricao)
+    public List<Produto> SearchProdutos(string searchTerm)
     {
-        var imagens = new[]
-        {
-        "https://images.kabum.com.br/produtos/fotos/sync_mirakl/519143/Celular-Apple-Iphone-15-128GB-Br-Mtp03br-a-Preto-Quadriband_1730143980_gg.jpg",
-        "https://www.estadao.com.br/recomenda/wp-content/uploads/2023/09/AdobeStock_876086159_Editorial_Use_Only.jpeg.webp",
-        "https://t2.tudocdn.net/720005?w=1200&h=1200"
-    };
+        if (string.IsNullOrWhiteSpace(searchTerm))
+            return _products;
 
-        var random = new Random();
-        int index = random.Next(imagens.Length);
-
-        return imagens[index];
+        return _products.Where(p =>
+            p.Descricao.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            p.Referencia.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+        ).ToList();
     }
+
+    public List<Produto> BuscarProdutosEmDestaque() => _products.Take(9).ToList();
 
 }

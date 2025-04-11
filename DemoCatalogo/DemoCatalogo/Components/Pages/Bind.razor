@@ -1,0 +1,77 @@
+@page "/bind"
+@implements IDisposable
+@rendermode RenderMode.InteractiveServer
+
+<PageTitle>Bind</PageTitle>
+
+<h1>Bind Example</h1>
+
+<p>
+    <label>
+        Input 1 (oninput):
+        <input @bind="InputValue1" @bind:event="oninput" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Input 2 (onchange):
+        <input @bind="InputValue2" />
+    </label>
+</p>
+
+<ul>
+    <li><code>InputValue1</code>: @InputValue1</li>
+    <li><code>InputValue2</code>: @InputValue2</li>
+</ul>
+
+@code {
+    private string _inputValue1 = string.Empty;
+    private string _inputValue2 = string.Empty;
+    private CancellationTokenSource _cts = new();
+
+    public string InputValue1
+    {
+        get => _inputValue1;
+        set
+        {
+            if (_inputValue1 != value)
+            {
+                _inputValue1 = value;
+                _ = DebounceUpdate();
+            }
+        }
+    }
+
+    public string InputValue2
+    {
+        get => _inputValue2;
+        set
+        {
+            _inputValue2 = value;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DebounceUpdate()
+    {
+        _cts.Cancel();
+        _cts = new CancellationTokenSource();
+        
+        try
+        {
+            await Task.Delay(50, _cts.Token);
+            StateHasChanged();
+        }
+        catch (TaskCanceledException)
+        {
+            // Ignore cancellations
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
+}
